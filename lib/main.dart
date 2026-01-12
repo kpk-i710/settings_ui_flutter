@@ -1,409 +1,265 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
-  runApp(const BitLifeApp());
+  runApp(const FamilyLifeApp());
 }
 
-class BitLifeApp extends StatelessWidget {
-  const BitLifeApp({Key? key}) : super(key: key);
+class FamilyLifeApp extends StatelessWidget {
+  const FamilyLifeApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BitLife - Life Simulator',
-      debugShowCheckedModeBanner: false,
+      title: 'Family Life',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFF5E6D3),
-          brightness: Brightness.light,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        scaffoldBackgroundColor: Colors.grey[50],
       ),
-      home: const BitLifeGameScreen(),
+      home: const FamilyLifeScreen(),
     );
   }
 }
 
-class BitLifeGameScreen extends StatefulWidget {
-  const BitLifeGameScreen({Key? key}) : super(key: key);
+class FamilyLifeScreen extends StatefulWidget {
+  const FamilyLifeScreen({Key? key}) : super(key: key);
 
   @override
-  State<BitLifeGameScreen> createState() => _BitLifeGameScreenState();
+  State<FamilyLifeScreen> createState() => _FamilyLifeScreenState();
 }
 
-class _BitLifeGameScreenState extends State<BitLifeGameScreen> {
-  int selectedTab = 0;
+class _FamilyLifeScreenState extends State<FamilyLifeScreen> {
+  int _selectedTab = 0;
+
+  final character = {
+    'name': 'Jennifer Foreman',
+    'age': 17,
+    'status': 'Student',
+    'balance': 420,
+    'happiness': 90,
+    'health': 76,
+  };
+
+  final events = [
+    {
+      'age': '15 years',
+      'title': 'My big brother, Stanley, started high school.',
+      'detail': 'My Shiba Inu, Champ, growled at my friends. I praised him.'
+    },
+    {
+      'age': '16 years',
+      'title': 'I tongue-kissed Travis Reynolds. It was my first kiss.',
+      'detail': 'He tasted like moldy yogurt.'
+    },
+    {
+      'age': '17 years',
+      'title': 'I graduated from high school.',
+      'detail': 'I decided to take some time off to focus on practicing magic.'
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0EDE6),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      appBar: AppBar(
+        title: const Text('Family Life'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Header Card
+            Card(
+              margin: const EdgeInsets.all(12),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    // Character Info
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          '4:52',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF1D1D1D),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF333333),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.apps,
-                                color: Colors.white,
-                                size: 10,
+                            Row(
+                              children: [
+                                Text(
+                                  character['name'] as String,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                const Icon(
+                                  CupertinoIcons.info_circle,
+                                  size: 18,
+                                  color: Colors.blue,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.heart_fill,
+                                  size: 14,
+                                  color: Colors.red,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  character['status'] as String,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey[700],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '\$${character['balance']}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
                               ),
                             ),
-                            const SizedBox(width: 6),
-                            Container(
-                              width: 16,
-                              height: 16,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color(0xFF333333),
-                                  width: 1.5,
-                                ),
-                                shape: BoxShape.circle,
+                            Text(
+                              'Bank Balance',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 24,
-                        color: Color(0xFF333333),
+                    const SizedBox(height: 20),
+                    // Happiness stat
+                    _buildStatBar(
+                      'Happiness',
+                      character['happiness'] as int,
+                      Colors.green,
+                    ),
+                    const SizedBox(height: 16),
+                    // Health stat
+                    _buildStatBar(
+                      'Health',
+                      character['health'] as int,
+                      Colors.orange,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Life Events
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Life Events',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    ...List.generate(
+                      events.length,
+                      (index) => _buildEventCard(
+                        events[index],
+                        index < events.length - 1,
                       ),
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 24),
-
-                // Title
-                const Text(
-                  'My Family Life',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF1D1D1D),
-                    letterSpacing: -0.8,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Build, manage and grow your family story',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF8E8E93),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Main Character Card
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8DCC8),
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
-                        blurRadius: 16,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'You',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF666666),
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              const Text(
-                                'Alex Johnson',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF1D1D1D),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Text(
-                                  'Age 32 • Married',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF333333),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xFF6B5B95),
-                                  const Color(0xFF88B0D3),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF6B5B95).withOpacity(0.3),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.person,
-                              size: 50,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      _buildStatBar('Health', 85),
-                      const SizedBox(height: 12),
-                      _buildStatBar('Happiness', 72),
-                      const SizedBox(height: 12),
-                      _buildStatBar('Career', 65),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Family Members
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8DCC8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Your Family',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1D1D1D),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      _buildFamilyMember(
-                        name: 'Sarah Johnson',
-                        relation: 'Spouse',
-                        age: '31 years',
-                        color: const Color(0xFFE91E63),
-                      ),
-                      const SizedBox(height: 12),
-                      _buildFamilyMember(
-                        name: 'Emma Johnson',
-                        relation: 'Daughter',
-                        age: '8 years',
-                        color: const Color(0xFF9C27B0),
-                      ),
-                      const SizedBox(height: 12),
-                      _buildFamilyMember(
-                        name: 'James Johnson',
-                        relation: 'Son',
-                        age: '5 years',
-                        color: const Color(0xFF2196F3),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Life Events
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8DCC8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Life Choices',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1D1D1D),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      _buildChoiceButton(
-                        icon: Icons.home,
-                        title: 'Home Life',
-                        description: 'Family activities and bonding',
-                        color: const Color(0xFF4CAF50),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildChoiceButton(
-                        icon: Icons.work,
-                        title: 'Career',
-                        description: 'Make career decisions',
-                        color: const Color(0xFFFFC107),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildChoiceButton(
-                        icon: Icons.favorite,
-                        title: 'Relationships',
-                        description: 'Strengthen family bonds',
-                        color: const Color(0xFFE91E63),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildChoiceButton(
-                        icon: Icons.school,
-                        title: 'Education',
-                        description: 'Kids school and learning',
-                        color: const Color(0xFF673AB7),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Daily Events
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8DCC8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Today\'s Events',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1D1D1D),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      _buildEventItem(
-                        'Emma has soccer practice',
-                        '3:00 PM',
-                        const Color(0xFF00BCD4),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildEventItem(
-                        'Family dinner night',
-                        '6:30 PM',
-                        const Color(0xFFFF6F00),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildEventItem(
-                        'Work deadline approaching',
-                        'Tomorrow',
-                        const Color(0xFFD32F2F),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Continue Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF333333),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 8,
-                      shadowColor: const Color(0xFF333333).withOpacity(0.3),
-                    ),
-                    child: const Text(
-                      'Continue Your Life',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-              ],
+              ),
             ),
-          ),
+            // Bottom tagline
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  'Live your Best Life...',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedTab,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _selectedTab = index;
+          });
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.book),
+            selectedIcon: Icon(CupertinoIcons.book_fill),
+            label: 'School',
+          ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.money_dollar),
+            selectedIcon: Icon(CupertinoIcons.money_dollar),
+            label: 'Assets',
+          ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.plus_circle, size: 28),
+            selectedIcon: Icon(CupertinoIcons.plus_circle_fill, size: 28),
+            label: 'Age',
+          ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.heart),
+            selectedIcon: Icon(CupertinoIcons.heart_fill),
+            label: 'Relations',
+          ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.ellipsis),
+            label: 'More',
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildStatBar(String label, int value) {
+  Widget _buildStatBar(String label, int value, Color color) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -413,9 +269,9 @@ class _BitLifeGameScreenState extends State<BitLifeGameScreen> {
             Text(
               label,
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF333333),
+                color: Colors.blue,
               ),
             ),
             Text(
@@ -423,210 +279,65 @@ class _BitLifeGameScreenState extends State<BitLifeGameScreen> {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF666666),
+                color: Colors.black,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         ClipRRect(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(6),
           child: LinearProgressIndicator(
             value: value / 100,
-            minHeight: 6,
-            backgroundColor: const Color(0xFFD4C9BA),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              _getColorForStat(label),
-            ),
+            minHeight: 8,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),
       ],
     );
   }
 
-  Color _getColorForStat(String stat) {
-    switch (stat) {
-      case 'Health':
-        return const Color(0xFF4CAF50);
-      case 'Happiness':
-        return const Color(0xFFFFC107);
-      case 'Career':
-        return const Color(0xFF2196F3);
-      default:
-        return const Color(0xFF666666);
-    }
-  }
-
-  Widget _buildFamilyMember({
-    required String name,
-    required String relation,
-    required String age,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.person,
-              color: Colors.white,
-              size: 22,
-            ),
+  Widget _buildEventCard(Map<String, String> event, bool showDivider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          event['age'] ?? '',
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1D1D1D),
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '$relation • $age',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF8E8E93),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(
-            Icons.chevron_right,
-            color: Color(0xFFC7C7CC),
-            size: 20,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildChoiceButton({
-    required IconData icon,
-    required String title,
-    required String description,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 1.5,
         ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 22,
-            ),
+        const SizedBox(height: 6),
+        Text(
+          event['title'] ?? '',
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.black87,
+            height: 1.4,
+            fontWeight: FontWeight.w500,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1D1D1D),
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF8E8E93),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Color(0xFFC7C7CC),
-            size: 16,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEventItem(String title, String time, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 1,
         ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+        const SizedBox(height: 6),
+        Text(
+          event['detail'] ?? '',
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.grey[700],
+            height: 1.4,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF1D1D1D),
-              ),
-            ),
+        ),
+        if (showDivider) ...[
+          const SizedBox(height: 12),
+          Divider(
+            color: Colors.grey[300],
+            height: 1,
           ),
-          Text(
-            time,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF8E8E93),
-            ),
-          ),
+          const SizedBox(height: 12),
         ],
-      ),
+      ],
     );
   }
 }
