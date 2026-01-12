@@ -1,343 +1,344 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 void main() {
-  runApp(const FamilyLifeApp());
+  runApp(const ApocalypseApp());
 }
 
-class FamilyLifeApp extends StatelessWidget {
-  const FamilyLifeApp({Key? key}) : super(key: key);
+class ApocalypseApp extends StatelessWidget {
+  const ApocalypseApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Family Life',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        scaffoldBackgroundColor: Colors.grey[50],
+        brightness: Brightness.dark,
       ),
-      home: const FamilyLifeScreen(),
+      home: const ApocalypseScreen(),
     );
   }
 }
 
-class FamilyLifeScreen extends StatefulWidget {
-  const FamilyLifeScreen({Key? key}) : super(key: key);
+class ApocalypseScreen extends StatefulWidget {
+  const ApocalypseScreen({Key? key}) : super(key: key);
 
   @override
-  State<FamilyLifeScreen> createState() => _FamilyLifeScreenState();
+  State<ApocalypseScreen> createState() => _ApocalypseScreenState();
 }
 
-class _FamilyLifeScreenState extends State<FamilyLifeScreen> {
-  int _selectedTab = 0;
-
-  final character = {
-    'name': 'Jennifer Foreman',
-    'age': 17,
-    'status': 'Student',
-    'balance': 420,
-    'happiness': 90,
-    'health': 76,
-  };
-
-  final events = [
-    {
-      'age': '15 years',
-      'title': 'My big brother, Stanley, started high school.',
-      'detail': 'My Shiba Inu, Champ, growled at my friends. I praised him.'
-    },
-    {
-      'age': '16 years',
-      'title': 'I tongue-kissed Travis Reynolds. It was my first kiss.',
-      'detail': 'He tasted like moldy yogurt.'
-    },
-    {
-      'age': '17 years',
-      'title': 'I graduated from high school.',
-      'detail': 'I decided to take some time off to focus on practicing magic.'
-    },
-  ];
+class _ApocalypseScreenState extends State<ApocalypseScreen> {
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Family Life'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header Card
-            Card(
-              margin: const EdgeInsets.all(12),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Character Info
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFF2A2420),
+              const Color(0xFF3D3830),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // Заголовок
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 24),
+                    child: Column(
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  character['name'] as String,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                const Icon(
-                                  CupertinoIcons.info_circle,
-                                  size: 18,
-                                  color: Colors.blue,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 6),
-                            Row(
-                              children: [
-                                const Icon(
-                                  CupertinoIcons.heart_fill,
-                                  size: 14,
-                                  color: Colors.red,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  character['status'] as String,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey[700],
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        Text(
+                          'ВЫЖИВ И РАЗВИВАЙСЯ',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
+                            letterSpacing: 2,
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '\$${character['balance']}',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
+                        const SizedBox(height: 8),
+                        Text(
+                          'АПОКАЛИПСИС',
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[100],
+                            letterSpacing: 3,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withOpacity(0.8),
+                                blurRadius: 8,
+                                offset: const Offset(2, 2),
                               ),
-                            ),
-                            Text(
-                              'Bank Balance',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    // Happiness stat
-                    _buildStatBar(
-                      'Happiness',
-                      character['happiness'] as int,
-                      Colors.green,
-                    ),
-                    const SizedBox(height: 16),
-                    // Health stat
-                    _buildStatBar(
-                      'Health',
-                      character['health'] as int,
-                      Colors.orange,
-                    ),
-                  ],
-                ),
+                  ),
+                  // Основная карточка - дневник
+                  _buildDiaryCard(),
+                  const SizedBox(height: 24),
+                  // Задачи
+                  _buildTasksList(),
+                  const SizedBox(height: 24),
+                  // Часы и дополнительная информация
+                  _buildClockSection(),
+                ],
               ),
             ),
-            // Life Events
-            Card(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Life Events',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: 16),
-                    ...List.generate(
-                      events.length,
-                      (index) => _buildEventCard(
-                        events[index],
-                        index < events.length - 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Bottom tagline
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  'Live your Best Life...',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
+          ),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedTab,
-        onDestinationSelected: (int index) {
-          setState(() {
-            _selectedTab = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(CupertinoIcons.book),
-            selectedIcon: Icon(CupertinoIcons.book_fill),
-            label: 'School',
+    );
+  }
+
+  Widget _buildDiaryCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFD4C5B0),
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.6),
+            blurRadius: 12,
+            offset: const Offset(4, 6),
           ),
-          NavigationDestination(
-            icon: Icon(CupertinoIcons.money_dollar),
-            selectedIcon: Icon(CupertinoIcons.money_dollar),
-            label: 'Assets',
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Текстура бумаги
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/><feColorMatrix in="noise" type="saturate" values="0.3"/></filter><rect width="100" height="100" fill="%23D4C5B0" filter="url(%23noise)"/></svg>',
+                  ),
+                  repeat: ImageRepeat.repeat,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(CupertinoIcons.plus_circle, size: 28),
-            selectedIcon: Icon(CupertinoIcons.plus_circle_fill, size: 28),
-            label: 'Age',
-          ),
-          NavigationDestination(
-            icon: Icon(CupertinoIcons.heart),
-            selectedIcon: Icon(CupertinoIcons.heart_fill),
-            label: 'Relations',
-          ),
-          NavigationDestination(
-            icon: Icon(CupertinoIcons.ellipsis),
-            label: 'More',
+          // Контент
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Мастерская представляла из себя подвальное помещение в многоэтажном доме. Попасть туда можно было только через въезд на подземную парковку.',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.brown[900],
+                    fontFamily: 'Courier',
+                    fontStyle: FontStyle.italic,
+                    height: 1.6,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Вам нужно найти инструменты по списку, чем больше - тем лучше. Но время не на Вашей стороне, с каждой потраченной минутой монстры всё больше.',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.brown[800],
+                    fontFamily: 'Courier',
+                    height: 1.6,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatBar(String label, int value, Color color) {
+  Widget _buildTasksList() {
+    final tasks = [
+      'Искать инструменты',
+      'Искать план здания',
+      'Запереть все двери и окна',
+    ];
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(
+        tasks.length,
+        (index) => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _buildTaskButton(tasks[index], index),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTaskButton(String text, int index) {
+    bool isSelected = selectedIndex == index;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          setState(() => selectedIndex = index);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: isSelected ? Colors.amber[200]! : Colors.grey[600]!,
+              width: isSelected ? 2.5 : 2,
+            ),
+            color: isSelected
+                ? Colors.amber[200]!.withOpacity(0.15)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(2),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.amber[200]!.withOpacity(0.3),
+                      blurRadius: 8,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : [],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: isSelected ? Colors.amber[200]! : Colors.grey[500]!,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: isSelected
+                    ? Center(
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: Colors.amber[200],
+                            borderRadius: BorderRadius.circular(1),
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[200],
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClockSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey[600]!,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Column(
+        children: [
+          Text(
+            'ОСТАВШЕЕСЯ ВРЕМЯ',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[400],
+              letterSpacing: 2,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '23:47',
+            style: TextStyle(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[100],
+              fontFamily: 'Courier',
+              shadows: [
+                Shadow(
+                  color: Colors.red.withOpacity(0.4),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildStatBox('ЗДОРОВЬЕ', '85%', Colors.green[700]!),
+              _buildStatBox('УГРОЗА', '62%', Colors.red[700]!),
+              _buildStatBox('РЕСУРСЫ', '41%', Colors.orange[700]!),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatBox(String label, String value, Color color) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          border: Border.all(color: color, width: 1.5),
+          borderRadius: BorderRadius.circular(2),
+        ),
+        child: Column(
           children: [
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.blue,
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.grey[400],
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
               ),
             ),
+            const SizedBox(height: 6),
             Text(
-              '$value%',
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: color,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(6),
-          child: LinearProgressIndicator(
-            value: value / 100,
-            minHeight: 8,
-            backgroundColor: Colors.grey[300],
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEventCard(Map<String, String> event, bool showDivider) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          event['age'] ?? '',
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          event['title'] ?? '',
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
-            height: 1.4,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          event['detail'] ?? '',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[700],
-            height: 1.4,
-          ),
-        ),
-        if (showDivider) ...[
-          const SizedBox(height: 12),
-          Divider(
-            color: Colors.grey[300],
-            height: 1,
-          ),
-          const SizedBox(height: 12),
-        ],
-      ],
+      ),
     );
   }
 }
