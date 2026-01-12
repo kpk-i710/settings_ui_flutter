@@ -1,344 +1,296 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const ApocalypseApp());
+  runApp(const DungeonGame());
 }
 
-class ApocalypseApp extends StatelessWidget {
-  const ApocalypseApp({Key? key}) : super(key: key);
+class DungeonGame extends StatelessWidget {
+  const DungeonGame({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: const GameScreen(),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
-      home: const ApocalypseScreen(),
+      theme: ThemeData.dark(),
     );
   }
 }
 
-class ApocalypseScreen extends StatefulWidget {
-  const ApocalypseScreen({Key? key}) : super(key: key);
+class GameScreen extends StatefulWidget {
+  const GameScreen({Key? key}) : super(key: key);
 
   @override
-  State<ApocalypseScreen> createState() => _ApocalypseScreenState();
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-class _ApocalypseScreenState extends State<ApocalypseScreen> {
-  int selectedIndex = 0;
+class _GameScreenState extends State<GameScreen> {
+  String currentScene = 'chamber';
+  List<String> history = [];
+
+  void _handleAction(String action) {
+    setState(() {
+      if (action == 'attack') {
+        history.add('You attempt to attack the masked woman...');
+        history.add(
+            'She moves with supernatural speed. Your final thought is of regret.');
+        history.add('GAME OVER');
+      } else if (action == 'retreat') {
+        history.add('You slowly back away from the hallway...');
+        history.add('The woman watches silently as you retreat into darkness.');
+        history.add('You have survived another day in the dungeon...');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFF2A2420),
-              const Color(0xFF3D3830),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Заголовок
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 24),
-                    child: Column(
-                      children: [
-                        Text(
-                          'ВЫЖИВ И РАЗВИВАЙСЯ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[400],
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'АПОКАЛИПСИС',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[100],
-                            letterSpacing: 3,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withOpacity(0.8),
-                                blurRadius: 8,
-                                offset: const Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Основная карточка - дневник
-                  _buildDiaryCard(),
-                  const SizedBox(height: 24),
-                  // Задачи
-                  _buildTasksList(),
-                  const SizedBox(height: 24),
-                  // Часы и дополнительная информация
-                  _buildClockSection(),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black87,
+                  Colors.brown[900]!,
+                  Colors.brown[800]!,
                 ],
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDiaryCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFD4C5B0),
-        borderRadius: BorderRadius.circular(4),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.6),
-            blurRadius: 12,
-            offset: const Offset(4, 6),
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          // Текстура бумаги
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/><feColorMatrix in="noise" type="saturate" values="0.3"/></filter><rect width="100" height="100" fill="%23D4C5B0" filter="url(%23noise)"/></svg>',
-                  ),
-                  repeat: ImageRepeat.repeat,
-                  fit: BoxFit.cover,
-                ),
+            child: Opacity(
+              opacity: 0.3,
+              child: Image.network(
+                'https://images.unsplash.com/photo-1578926314433-b5eef1b8b735?w=600',
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          // Контент
-          Padding(
-            padding: const EdgeInsets.all(20),
+
+          // Content
+          SafeArea(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Мастерская представляла из себя подвальное помещение в многоэтажном доме. Попасть туда можно было только через въезд на подземную парковку.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.brown[900],
-                    fontFamily: 'Courier',
-                    fontStyle: FontStyle.italic,
-                    height: 1.6,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Вам нужно найти инструменты по списку, чем больше - тем лучше. Но время не на Вашей стороне, с каждой потраченной минутой монстры всё больше.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.brown[800],
-                    fontFamily: 'Courier',
-                    height: 1.6,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTasksList() {
-    final tasks = [
-      'Искать инструменты',
-      'Искать план здания',
-      'Запереть все двери и окна',
-    ];
-
-    return Column(
-      children: List.generate(
-        tasks.length,
-        (index) => Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: _buildTaskButton(tasks[index], index),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTaskButton(String text, int index) {
-    bool isSelected = selectedIndex == index;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          setState(() => selectedIndex = index);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: isSelected ? Colors.amber[200]! : Colors.grey[600]!,
-              width: isSelected ? 2.5 : 2,
-            ),
-            color: isSelected
-                ? Colors.amber[200]!.withOpacity(0.15)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(2),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: Colors.amber[200]!.withOpacity(0.3),
-                      blurRadius: 8,
-                      spreadRadius: 1,
+                // Decorative top border
+                Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.brown[600]!,
+                        width: 2,
+                      ),
                     ),
-                  ]
-                : [],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: isSelected ? Colors.amber[200]! : Colors.grey[500]!,
-                    width: 2,
                   ),
-                  borderRadius: BorderRadius.circular(2),
                 ),
-                child: isSelected
-                    ? Center(
-                        child: Container(
-                          width: 10,
-                          height: 10,
-                          decoration: BoxDecoration(
-                            color: Colors.amber[200],
-                            borderRadius: BorderRadius.circular(1),
-                          ),
-                        ),
-                      )
-                    : null,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[200],
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildClockSection() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey[600]!,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Column(
-        children: [
-          Text(
-            'ОСТАВШЕЕСЯ ВРЕМЯ',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[400],
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '23:47',
-            style: TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[100],
-              fontFamily: 'Courier',
-              shadows: [
-                Shadow(
-                  color: Colors.red.withOpacity(0.4),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                // Main content area
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 40,
+                      ),
+                      child: Column(
+                        children: [
+                          // Story text box
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.7),
+                              border: Border.all(
+                                color: Colors.grey[800]!,
+                                width: 3,
+                              ),
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            padding: const EdgeInsets.all(28),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Hidden text hint
+                                Text(
+                                  'There is nothing here but piles upon piles of\nskeletal remains, reduced to spinal fragments\nand cranial shards, broken like the residue\nof countless failures.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 12,
+                                    height: 1.6,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+
+                                // Main narrative
+                                const Text(
+                                  'You emerge from the dark chamber. A cloaked woman stands in the hallway, armed with two daggers. Her face is concealed behind a circular white mask. "You might be able to fool the others, but not me. Any last words, thief?"',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    height: 1.8,
+                                    fontWeight: FontWeight.w300,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+
+                                // History
+                                if (history.isNotEmpty) ...[
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    height: 1,
+                                    color: Colors.grey[700],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ...history.map((text) => Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 6),
+                                    child: Text(
+                                      text,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: text.contains('GAME OVER')
+                                            ? Colors.red[400]
+                                            : Colors.amber[300],
+                                        fontSize: 14,
+                                        height: 1.6,
+                                      ),
+                                    ),
+                                  )),
+                                ],
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 32),
+
+                          // Action buttons
+                          if (!history.any((text) => text.contains('GAME OVER')))
+                            Column(
+                              children: [
+                                // Attack button
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () => _handleAction('attack'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black87,
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 18,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        side: BorderSide(
+                                          color: Colors.grey[700]!,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      elevation: 4,
+                                    ),
+                                    child: const Text(
+                                      'Attack',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 14),
+
+                                // Retreat button
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () => _handleAction('retreat'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black87,
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 18,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        side: BorderSide(
+                                          color: Colors.grey[700]!,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      elevation: 4,
+                                    ),
+                                    child: const Text(
+                                      'Retreat',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                          // Reset button if game over
+                          if (history.any((text) => text.contains('GAME OVER')))
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    history.clear();
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.brown[900],
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 18,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Start Again',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Bottom border
+                Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.brown[600]!,
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildStatBox('ЗДОРОВЬЕ', '85%', Colors.green[700]!),
-              _buildStatBox('УГРОЗА', '62%', Colors.red[700]!),
-              _buildStatBox('РЕСУРСЫ', '41%', Colors.orange[700]!),
-            ],
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildStatBox(String label, String value, Color color) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          border: Border.all(color: color, width: 1.5),
-          borderRadius: BorderRadius.circular(2),
-        ),
-        child: Column(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 10,
-                color: Colors.grey[400],
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
 }
+// sfd
